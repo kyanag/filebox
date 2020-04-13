@@ -31,8 +31,7 @@ class Move:
 
     def __call__(self, file: str) -> bool:
         if os.path.exists(file):
-            print(file, "to", self.dir)
-            #shutil.move(file, self.dir)
+            shutil.move(file, self.dir)
         else:
             raise IOError("移动失败!")
         return True
