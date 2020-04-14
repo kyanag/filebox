@@ -1,6 +1,10 @@
 import shutil
 import os
 from pathlib import Path
+try:
+    import fitz
+except:
+    fitz = None
 
 
 
@@ -66,3 +70,10 @@ class Rename:
             _ = os.path.join(os.path.dirname(file), "[{}]".format(i) + basename)
             i += 1
         return _
+
+
+
+class PdfExportImage:
+
+    def __init__(self):
+        pass

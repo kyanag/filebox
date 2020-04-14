@@ -22,12 +22,6 @@ def treeview_deletesel(evt):
         evt.widget.delete(item)
 
 
-def treeview_addfile(evt):
-    file = filedialog.askdirectory(title="添加文件目录")
-    _ = [os.path.basename(file), file]
-    self.v.tv.insert("", "end", values=_)
-
-
 class V:
     def init(self, c):
         self.c = c
@@ -149,7 +143,7 @@ class V:
         def _(evt):
             dir = filedialog.askdirectory()
             if dir is None or dir == '':
-                pass
+                messagebox.showinfo("提示", "请选择文件夹")
             else:
                 self.c.process(Move(dir))
 
