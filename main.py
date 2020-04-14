@@ -14,40 +14,63 @@ def list_unique(files):
             _.add(file)
             return True
 
-    return filter(__, files)
+    return list(filter(__, files))
 
 
 class M:
     v: V
     params: dict
+    _files: list
     def init(self, v):
         self.v = v
 
     def setup(self, files: list, params: dict):
         self.files = files
         self.params = params
+        self._filechanged()
 
     def merge(self, files):
+        self._files.extend(files)
+        self._filechanged()
+
+    def remove(self, files):
         for file in files:
-            _ = [os.path.basename(file), file]
-            self.v.tv.insert("", "end", values=_)
+            self._files.remove(file)
+        self._filechanged()
+
 
     @property
     def files(self):
-        items = self.v.tv.get_children()
-        return [self.v.tv.item(item)['values'][1] for item in items]
+        return self._files
 
     @files.setter
-    def files(self, files):
-        self.clear()
+    def files(self, files: list):
         files = list_unique(files)
-        for file in files:
-            _ = [os.path.basename(file), os.path.normcase(file)]
-            self.v.tv.insert("", "end", values=_)
+        self._files = files
 
-    def clear(self):
+        self._filechanged()
+
+
+    def _filechanged(self):
+        # 同步到 treeview
+
         for item in self.v.tv.get_children():
             self.v.tv.delete(item)
+
+        for file in self._files:
+            _ = [os.path.basename(file), file]
+            self.v.tv.insert("", "end", values=_)
+
+        # 同步 treeview 左下角状态
+        self.v.treeview_label.config({
+            "text": "共{}项 {}个文件 {}个目录".format(
+                len(self._files),
+                len(list(filter(os.path.isfile, self._files))),
+                len(list(filter(os.path.isdir, self._files)))
+            )
+        })
+
+
 
 class C:
     m: M
@@ -57,6 +80,9 @@ class C:
     def setup(self):
         pass
 
+    def removefiles(self, files: list):
+        self.m.remove(files)
+
     def addfile(self, file: str):
         self.m.merge([file])
 
@@ -65,6 +91,12 @@ class C:
 
     def getparam(self, name):
         return self.m.params[name]
+
+    def setfiles(self, files):
+        self.m.files = files
+
+    def getfiles(self, files):
+        return self.m.files
 
     def reader(self, handle):
         files = self.m.files
