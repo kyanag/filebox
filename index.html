@@ -13,6 +13,15 @@
         td{
             white-space: nowrap;
         }
+        #filebox-readbar > *{
+            margin-bottom: 10px;
+        }
+        #filebox-filterbar > *{
+            margin-bottom: 10px;
+        }
+        #filebox-actionbar > *{
+            margin-bottom: 10px;
+        }
     </style>
   </head>
   <body>
@@ -20,15 +29,7 @@
         <div class="row">
             <div class="card col-md-12">
                 <div class="card-body" style="border-bottom: solid 1px rgba(0,0,0,.125);" id="filebox-readbar">
-                    <!-- <button type="button" class="btn btn-secondary btn-sm" id="filebox-btn-addfile">添加目录</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Secondary</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Success</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Danger</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Warning</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Info</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Light</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Dark</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Link</button> -->
+                    
                 </div>
                 <div class="card-body" style="border-bottom: solid 1px rgba(0,0,0,.125);" id="filebox-filterbar">
                     <button type="button" class="btn btn-secondary btn-sm">Primary</button>
@@ -76,11 +77,12 @@
                     <button type="button" class="btn btn-secondary btn-sm">Info</button>
                     <button type="button" class="btn btn-secondary btn-sm">Light</button>
                     <button type="button" class="btn btn-secondary btn-sm">Dark</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Link</button>
+                    <button type="button" class="btn btn-secondary btn-sm"><input type="text" class="form-control input-sm" id="usr" placeholder=""></button>
                 </div>
             </div>
         </div>
     </div>
   </body>
   <script src="./renderer.js"></script>
+  <script src="./static/js/"></script>
 </html>

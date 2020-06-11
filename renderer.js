@@ -1,7 +1,8 @@
 const fs = require('fs')
-const path = require("path");
+const path = require("path")
+const bootstrap = require("bootstrap");
 const $ = require("jquery")
-const {Addfile} = require("./src/readers")
+const {Addfile, Finder} = require("./src/readers")
 
 let data = {
     "files": [],
@@ -14,15 +15,18 @@ class App{
 
     files = [];
 
+    config = {};
+
     fileConcat(files){
         this.files = this.files.concat(files)
         this.onFilesChanges();
     }
 
-    registerReader(Addfile){
-        console.log("addfile registeed!")
-        let addfile = new Addfile(this)
-        this.readers.push(addfile)
+    registerReader(reader){
+        console.log(reader);
+        console.log("reader registeed!")
+        let instance = new (reader)(this)
+        this.readers.push(instance)
     }
 
     start(){
@@ -52,12 +56,10 @@ class App{
 </tr>
 `);
             $(element).contextmenu(function(){
-
+                
             });
             $("#filebox-filelist").append(element);
         })
-
-        
     }
 
     statusBar(message){
@@ -68,5 +70,6 @@ class App{
 $(() => {
     let app = new App();
     app.registerReader(Addfile)
+    app.registerReader(Finder)
     app.start();
 });
