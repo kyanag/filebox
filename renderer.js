@@ -2,13 +2,9 @@ const fs = require('fs')
 const path = require("path")
 const bootstrap = require("bootstrap");
 const $ = require("jquery")
-const {Addfile, Finder} = require("./src/readers")
+const { Addfile, Finder } = require("./src/readers")
 
-let data = {
-    "files": [],
-};
-
-class App{
+class App {
     readers = [];
     filters = [];
     handlers = [];
@@ -17,52 +13,52 @@ class App{
 
     config = {};
 
-    fileConcat(files){
+    fileConcat(files) {
         this.files = this.files.concat(files)
         this.onFilesChanges();
     }
 
-    registerReader(reader){
+    registerReader(reader) {
         console.log(reader);
         console.log("reader registeed!")
         let instance = new (reader)(this)
         this.readers.push(instance)
     }
 
-    start(){
-        this.readers.forEach( reader => {
+    start() {
+        this.readers.forEach(reader => {
             reader.beforeStart()
         })
-        this.filters.forEach( filter => {
+        this.filters.forEach(filter => {
             filter.beforeStart()
         })
-        this.handlers.forEach( handler => {
+        this.handlers.forEach(handler => {
             handler.beforeStart()
         })
     }
 
-    onFilesChanges = function(){
+    onFilesChanges = function () {
         $("#filebox-filelist").html("");
         console.log(this.files);
-        this.files.forEach( (file, index) => {
+        this.files.forEach((file, index) => {
             file = file.replace("\\", "/")
 
             let element = $(`
 <tr>
-    <th scope="row">${index+1}</th>
+    <th scope="row">${index + 1}</th>
     <td>${path.basename(file)}</td>
     <td>${file}</td>
     <td>@mdo</td>
 </tr>
 `);
-            $(element).contextmenu(function(){
-                
+            $(element).contextmenu(function () {
+
             });
             $("#filebox-filelist").append(element);
         })
     }
 
-    statusBar(message){
+    statusBar(message) {
         //pass
     }
 };
@@ -72,4 +68,6 @@ $(() => {
     app.registerReader(Addfile)
     app.registerReader(Finder)
     app.start();
+
+    global.app = app;
 });

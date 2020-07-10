@@ -1,15 +1,14 @@
 const $ = require("jquery")
+const { ValueWatcher } = require("./binding")
 const { dialog } = require('electron').remote
 
-class Addfile{
-    app
-
-    constructor(app){
+class Addfile {
+    constructor(app) {
         this.app = app;
         console.log("addfile created!");
     }
 
-    beforeStart(){
+    beforeStart() {
         let btn = $('<button type="button" class="btn btn-secondary btn-sm">添加目录</button>')
         $(btn).click((e) => {
             this.run();
@@ -18,10 +17,10 @@ class Addfile{
         $("#filebox-readbar").append(btn);
     }
 
-    run(){
+    run() {
         let files = dialog.showOpenDialogSync({
-            title:"选择文件或者目录",
-            properties:[
+            title: "选择文件或者目录",
+            properties: [
                 "openFile",
                 'openDirectory',
                 'multiSelections'
@@ -33,33 +32,48 @@ class Addfile{
     }
 }
 
-class Finder{
-    
-    constructor(app){
+class Finder {
+
+    constructor(app) {
         this.app = app;
         console.log("finder created!");
+
+        this.data = {
+            depth: 1,
+            showFile: true,
+            showDir: true,
+        };
+
+        this._bindings = {};
+        this.$proxy = this.createObserver(this.data);
     }
 
-    beforeStart(){
+    beforeStart() {
         let ele = `
 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
     <button type="button" class="btn btn-secondary btn-sm">获取下属文件/目录</button>
     <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
         <div class="dropdown-menu dropdown-menu-right mt-0" aria-labelledby="btnGroupDrop1">
-            <div class="dropdown-item">
-                <input type="text" class="form-control form-control-sm" id="usr" placeholder="深度">
-            </div>
-            <div class="dropdown-item">
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="0">文件
-                    </label>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" class="form-control form-control-sm" id="filebox-reader-finder-depth" placeholder="深度" value="${this.data.depth}">
+                    </div>
                 </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" value="1">目录
-                    </label>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" name="filebox-reader-finder-showfile" class="form-check-input" ${this.data.showFile ? "checked" : ""}>文件
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" name="filebox-reader-finder-showdir"  class="form-check-input" ${this.data.showDir ? "checked" : ""}>目录
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,13 +81,58 @@ class Finder{
 </div>        
 `
         $("#filebox-readbar").append(ele);
+
+        this.pushWatcher(
+            new ValueWatcher(
+                document.querySelector("#filebox-reader-finder-depth"), 
+                this.$proxy,
+                "depth"
+            )
+        );
+
+        this.pushWatcher(
+            new ValueWatcher(
+                document.querySelector("[name=filebox-reader-finder-showfile]"),
+                this.$proxy,
+                "showFile"
+            )
+        );
+
+        this.pushWatcher(
+            new ValueWatcher(
+                document.querySelector("[name=filebox-reader-finder-showdir]"),
+                this.$proxy,
+                "showDir"
+            )
+        );
     }
 
-    run(){
+    createObserver(datas) {
+        const me = this;
+        const handler = {
+            set(target, key, value) {
+                const rets = Reflect.set(target, key, value);
+                me._bindings[key].map(item => {
+                    item.update();
+                });
+                return rets;
+            }
+        };
+        return new Proxy(datas, handler);
+    }
+
+    pushWatcher(watcher) {
+        if (!this._bindings[watcher.key]) {
+            this._bindings[watcher.key] = [];
+        }
+        this._bindings[watcher.key].push(watcher);
+    }
+
+    run() {
         return;
         let files = dialog.showOpenDialogSync({
-            title:"选择文件或者目录",
-            properties:[
+            title: "选择文件或者目录",
+            properties: [
                 "openFile",
                 'openDirectory',
                 'multiSelections'
