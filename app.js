@@ -9,13 +9,16 @@ let data = {
 };
 
 class App{
-    readers = [];
-    filters = [];
-    handlers = [];
+    
+    constructor(){
+        this.readers = [];
+        this.filters = [];
+        this.handlers = [];
 
-    files = [];
+        this.files = [];
 
-    config = {};
+        this.config = {};
+    }
 
     fileConcat(files){
         this.files = this.files.concat(files)
@@ -41,7 +44,7 @@ class App{
         })
     }
 
-    onFilesChanges = function(){
+    onFilesChanges(){
         $("#filebox-filelist").html("");
         console.log(this.files);
         this.files.forEach( (file, index) => {

@@ -2,8 +2,6 @@ const $ = require("jquery")
 const { dialog } = require('electron').remote
 
 class Addfile{
-    app
-
     constructor(app){
         this.app = app;
         console.log("addfile created!");
@@ -34,10 +32,27 @@ class Addfile{
 }
 
 class Finder{
-    
     constructor(app){
         this.app = app;
         console.log("finder created!");
+
+        this.data = {
+            depth: 1,
+            file: true,
+            dir: true
+        };
+
+        this.$proxy = new Proxy(this.data);
+        this._watchers = {};
+    }
+
+    createObserver(data){
+        const that = this;
+        const handler = {
+            set(target, key, value){
+                const rets = Reflect.set(target, key, value);
+            }
+        };
     }
 
     beforeStart(){
