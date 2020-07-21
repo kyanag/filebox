@@ -2,8 +2,13 @@ const $ = require("jquery")
 const { ValueWatcher } = require("./binding")
 const { dialog } = require('electron').remote
 
+<<<<<<< HEAD
 class Addfile {
     constructor(app) {
+=======
+class Addfile{
+    constructor(app){
+>>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
         this.app = app;
         console.log("addfile created!");
     }
@@ -32,20 +37,43 @@ class Addfile {
     }
 }
 
+<<<<<<< HEAD
 class Finder {
 
     constructor(app) {
+=======
+class Finder{
+    constructor(app){
+>>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
         this.app = app;
         console.log("finder created!");
 
         this.data = {
             depth: 1,
+<<<<<<< HEAD
             showFile: true,
             showDir: true,
         };
 
         this._bindings = {};
         this.$proxy = this.createObserver(this.data);
+=======
+            file: true,
+            dir: true
+        };
+
+        this.$proxy = new Proxy(this.data);
+        this._watchers = {};
+    }
+
+    createObserver(data){
+        const that = this;
+        const handler = {
+            set(target, key, value){
+                const rets = Reflect.set(target, key, value);
+            }
+        };
+>>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
     }
 
     beforeStart() {

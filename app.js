@@ -4,14 +4,28 @@ const bootstrap = require("bootstrap");
 const $ = require("jquery")
 const { Addfile, Finder } = require("./src/readers")
 
+<<<<<<< HEAD:renderer.js
 class App {
     readers = [];
     filters = [];
     handlers = [];
+=======
+let data = {
+    "files": [],
+};
 
-    files = [];
+class App{
+    
+    constructor(){
+        this.readers = [];
+        this.filters = [];
+        this.handlers = [];
+>>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d:app.js
 
-    config = {};
+        this.files = [];
+
+        this.config = {};
+    }
 
     fileConcat(files) {
         this.files = this.files.concat(files)
@@ -37,7 +51,11 @@ class App {
         })
     }
 
+<<<<<<< HEAD:renderer.js
     onFilesChanges = function () {
+=======
+    onFilesChanges(){
+>>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d:app.js
         $("#filebox-filelist").html("");
         console.log(this.files);
         this.files.forEach((file, index) => {

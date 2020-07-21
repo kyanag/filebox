@@ -1,6 +1,5 @@
 *.log
-/venv
 /.idea
-/__pycache__
-test.py
 /node_modules
+package-lock.json
+/dist
