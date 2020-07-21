@@ -2,13 +2,8 @@ const $ = require("jquery")
 const { ValueWatcher } = require("./binding")
 const { dialog } = require('electron').remote
 
-<<<<<<< HEAD
-class Addfile {
-    constructor(app) {
-=======
 class Addfile{
     constructor(app){
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
         this.app = app;
         console.log("addfile created!");
     }
@@ -37,43 +32,18 @@ class Addfile{
     }
 }
 
-<<<<<<< HEAD
-class Finder {
-
-    constructor(app) {
-=======
 class Finder{
     constructor(app){
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
         this.app = app;
-        console.log("finder created!");
 
         this.data = {
             depth: 1,
-<<<<<<< HEAD
             showFile: true,
-            showDir: true,
+            showDir: true
         };
 
+        this.$proxy = this.createObserver(this.data);//
         this._bindings = {};
-        this.$proxy = this.createObserver(this.data);
-=======
-            file: true,
-            dir: true
-        };
-
-        this.$proxy = new Proxy(this.data);
-        this._watchers = {};
-    }
-
-    createObserver(data){
-        const that = this;
-        const handler = {
-            set(target, key, value){
-                const rets = Reflect.set(target, key, value);
-            }
-        };
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
     }
 
     beforeStart() {
@@ -86,19 +56,19 @@ class Finder{
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <input type="text" class="form-control form-control-sm" id="filebox-reader-finder-depth" placeholder="深度" value="${this.data.depth}">
+                        <input type="text" class="form-control form-control-sm" id="filebox-reader-finder-depth" placeholder="深度" value="${this.$proxy.depth}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input type="checkbox" name="filebox-reader-finder-showfile" class="form-check-input" ${this.data.showFile ? "checked" : ""}>文件
+                                <input type="checkbox" name="filebox-reader-finder-showfile" class="form-check-input" ${this.$proxy.showFile ? "checked" : ""}>文件
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input type="checkbox" name="filebox-reader-finder-showdir"  class="form-check-input" ${this.data.showDir ? "checked" : ""}>目录
+                                <input type="checkbox" name="filebox-reader-finder-showdir"  class="form-check-input" ${this.$proxy.showDir ? "checked" : ""}>目录
                             </label>
                         </div>
                     </div>
@@ -117,7 +87,6 @@ class Finder{
                 "depth"
             )
         );
-
         this.pushWatcher(
             new ValueWatcher(
                 document.querySelector("[name=filebox-reader-finder-showfile]"),
@@ -125,7 +94,6 @@ class Finder{
                 "showFile"
             )
         );
-
         this.pushWatcher(
             new ValueWatcher(
                 document.querySelector("[name=filebox-reader-finder-showdir]"),
@@ -144,6 +112,9 @@ class Finder{
                     item.update();
                 });
                 return rets;
+            },
+            get(target, key){
+                return Reflect.get(target, key);
             }
         };
         return new Proxy(datas, handler);

@@ -1,3 +1,0 @@
-function bind(processor, a){
-
-}

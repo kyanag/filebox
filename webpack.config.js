@@ -3,7 +3,6 @@ const UglifyPlugin = require('uglifyjs-webpack-plugin')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
-
 module.exports = {
   entry: path.join(__dirname,'app.js'),
 
@@ -11,13 +10,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
-
-  node: {
-    fs: 'empty',
-    net:'empty',
-    tls:"empty",
-  },
-
+  mode: 'development',
+  target:"electron-renderer",
   module: {
     rules: [
       {
@@ -30,9 +24,6 @@ module.exports = {
       },
       {
         test: /\.css/,
-        include: [
-          path.resolve(__dirname, 'style'),
-        ],
         use: [
           {
             loader: MiniCssExtractPlugin.loader
@@ -71,6 +62,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
     // 使用 uglifyjs-webpack-plugin 来压缩 JS 代码
-    //new UglifyPlugin()
+    new UglifyPlugin()
   ]
 }

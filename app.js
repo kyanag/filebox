@@ -1,26 +1,21 @@
 const fs = require('fs')
 const path = require("path")
-const bootstrap = require("bootstrap");
 const $ = require("jquery")
+const { Grid } = require("ag-grid")
+
 const { Addfile, Finder } = require("./src/readers")
 
-<<<<<<< HEAD:renderer.js
-class App {
-    readers = [];
-    filters = [];
-    handlers = [];
-=======
-let data = {
-    "files": [],
-};
+require("bootstrap");
+require('bootstrap/dist/css/bootstrap.min.css')
+require("ag-grid/dist/styles/ag-grid.css");
+require("ag-grid/dist/styles/ag-theme-bootstrap.css");
+
 
 class App{
-    
     constructor(){
         this.readers = [];
         this.filters = [];
         this.handlers = [];
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d:app.js
 
         this.files = [];
 
@@ -40,6 +35,20 @@ class App{
     }
 
     start() {
+        const gridOptions = {
+            columnDefs: [
+                {headerName: '#', field: 'index'},
+                {headerName: '文件名', field: 'basename'},
+                {headerName: '路径', field: 'path'},
+                {headerName: '操作', field: 'action'}
+            ],
+            rowData: [
+                
+            ]
+        };
+        this.grid = new Grid(document.querySelector("#filebox-files"), gridOptions);
+        console.log(this.grid, gridOptions);
+
         this.readers.forEach(reader => {
             reader.beforeStart()
         })
@@ -51,13 +60,7 @@ class App{
         })
     }
 
-<<<<<<< HEAD:renderer.js
-    onFilesChanges = function () {
-=======
     onFilesChanges(){
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d:app.js
-        $("#filebox-filelist").html("");
-        console.log(this.files);
         this.files.forEach((file, index) => {
             file = file.replace("\\", "/")
 

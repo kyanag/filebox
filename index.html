@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>批量文件操作工具</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    <link type="text/css" rel="styleSheet" href="./static/css/bootstrap.min.css" />
     <style>
         ul.list-group {
             height: 100px;
@@ -50,30 +48,8 @@
                 </div>
                 <div class="card-body"
                     style="padding: 0px; margin: 0px;border-bottom: solid 1px rgba(0,0,0,.125); height:500px;overflow-y:scroll;">
-                    <table class="table table-sm table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">文件名</th>
-                                <th scope="col">完整地址</th>
-                                <th scope="col">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="filebox-filelist">
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <table class="table table-sm table-bordered" id=""></table>
+                    <div id="filebox-files" style="height: 500px;" class="ag-theme-balham col-md-12"></div>
                 </div>
                 <div class="card-body" id="filebox-actionbar">
                     <button type="button" class="btn btn-secondary btn-sm">Primary</button>
@@ -84,18 +60,9 @@
                     <button type="button" class="btn btn-secondary btn-sm">Info</button>
                     <button type="button" class="btn btn-secondary btn-sm">Light</button>
                     <button type="button" class="btn btn-secondary btn-sm">Dark</button>
-                    <button type="button" class="btn btn-secondary btn-sm"><input type="text"
-                            class="form-control input-sm" id="usr" placeholder=""></button>
                 </div>
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-</body>
-<script src="./renderer.js"></script>
-<script src="./static/js/"></script>
-
-=======
   </body>
->>>>>>> 3902a856f0150fd1a4a42889dae589835b44dd5d
 </html>
