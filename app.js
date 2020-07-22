@@ -44,10 +44,12 @@ class App{
             ],
             rowData: [
                 
-            ]
+            ],
+            rowSelection: 'single',
+            //onSelectionChanged: onSelectionChanged,
         };
-        this.grid = new Grid(document.querySelector("#filebox-files"), gridOptions);
-        console.log(this.grid, gridOptions);
+        new Grid(document.querySelector("#filebox-files"), gridOptions);
+        this.gridApi = gridOptions.api;
 
         this.readers.forEach(reader => {
             reader.beforeStart()
@@ -61,25 +63,16 @@ class App{
     }
 
     onFilesChanges(){
-        this.files.forEach((file, index) => {
-            file = file.replace("\\", "/")
-
-            let element = $(`
-<tr>
-    <th scope="row">${index + 1}</th>
-    <td>${path.basename(file)}</td>
-    <td>${file}</td>
-    <td>@mdo</td>
-</tr>
-`);
-            $(element).contextmenu(function () {
-
-            });
-            $("#filebox-filelist").append(element);
-        })
+        this.gridApi.setRowData(this.files.map((file, index) => {
+            return {
+                index: index+1,
+                basename: path.basename(file),
+                path: file
+            };
+        }));
     }
 
-    statusBar(message) {
+    statusBar(message, delay = 2000) {
         //pass
     }
 };

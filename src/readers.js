@@ -12,8 +12,7 @@ class Addfile{
         let btn = $('<button type="button" class="btn btn-secondary btn-sm">添加目录</button>')
         $(btn).click((e) => {
             this.run();
-        })
-        console.log(window.document);
+        });
         $("#filebox-readbar").append(btn);
     }
 
@@ -26,9 +25,12 @@ class Addfile{
                 'multiSelections'
             ],
         });
-        this.app.statusBar(`选择 ${files.length} 项`)
-
-        this.app.fileConcat(files);
+        if(Array.isArray(files)){
+            this.app.statusBar(`选择 ${files.length} 项`)
+            this.app.fileConcat(files);
+        }else{
+            this.app.statusBar(`没有选择文件！`)
+        }
     }
 }
 
